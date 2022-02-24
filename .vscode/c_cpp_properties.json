@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Win64",
+            "includePath": [
+                "${workspaceFolder}/library/include/**",
+                "${workspaceFolder}/program/include/**",
+                "C:/Program Files/mingw/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "MBCS",
+                "_MBCS"
+            ],
+            "compilerPath": "C:/Program Files/mingw/bin/gcc.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64",
+            "compilerArgs": [
+                "-DDX_GCC_COMPILE",
+                "-DDX_NON_INLINE_ASM"
+            ]
+        }
+    ],
+    "version": 4
+}
