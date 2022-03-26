@@ -12,13 +12,12 @@ cmake_minimum_required(VERSION 3.23.0)
 project(${CMAKE_PROJECT_NAME} CXX)
 
 # インクルードファイル指定
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../library/include)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../program/include)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../library/include/DxLib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../program/header)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../program/library/DxLib)
 
 # ソースファイルを全部さらってきて追加
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/../program SOURCES)
-add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/../program/source SOURCE)
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCE})
 
 # ライブラリをリンク
 target_link_libraries(
