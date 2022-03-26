@@ -1,5 +1,11 @@
 # g++のオプション指定
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDX_GCC_COMPILE -mwindows")
+if(${IS_DEBUG_BUILD})
+    # デバッグビルド
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -DDX_GCC_COMPILE -mwindows")
+else()
+    # リリースビルド
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDX_GCC_COMPILE -mwindows")
+endif()
 
 # CMakeのバージョン指定とプロジェクト設定
 cmake_minimum_required(VERSION 3.23.0)
