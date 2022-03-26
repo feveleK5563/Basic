@@ -3,7 +3,8 @@
         {
             "name": "Win64",
             "includePath": [
-                "${workspaceFolder}/program/header/**",
+                "${workspaceFolder}/program/library/include/**",
+                "${workspaceFolder}/program/include/**",
                 "C:/Program Files/mingw/include"
             ],
             "defines": [
