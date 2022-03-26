@@ -17,13 +17,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     SetGraphMode(1280, 720, 32);
 
     // 初期化と裏画面化
-    if (DxLib_Init() == -1 /* || SetDrawScreen(DX_SCREEN_BACK) != 0*/)
+    if (DxLib_Init() == -1 || SetDrawScreen(DX_SCREEN_BACK) != 0)
     {
         return 1;
     }
 
     // 絵を表示
     DrawCircle(640, 340, 100, GetColor(255, 255, 255), 0);
+
+    if (ScreenFlip() != 0)
+    {
+        return 1;
+    }
 
     // キー入力待ち
     WaitKey();

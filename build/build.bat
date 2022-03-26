@@ -1,6 +1,6 @@
 @echo off
 
-set WORKING_PATH=%1
+set WORKING_PATH=%~dp0\..\
 
 cd /d %~dp0
 
