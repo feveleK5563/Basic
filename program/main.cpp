@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include "DxLib/DxLib.h"
+#include "test.hpp"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -22,13 +22,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         return 1;
     }
 
-    // 絵を表示
-    DrawCircle(640, 340, 100, GetColor(255, 255, 255), 0);
-
-    if (ScreenFlip() != 0)
-    {
-        return 1;
-    }
+    Test();
 
     // キー入力待ち
     WaitKey();

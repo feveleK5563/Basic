@@ -1,41 +1,43 @@
 @echo off
 
-set WORKING_PATH=%~dp0\..\
+rem プロジェクト名定義
+set PROJECT_NAME=basic
 
+rem 作業ディレクトリ
 cd /d %~dp0
+set MAKE_DIR=%~dp0\make
+set ROM_DIR=%~dp0\..\rom
+set EXE_FILE=%MAKE_DIR%\%PROJECT_NAME%.exe
 
-rem 繧ｳ繝ｳ繝代う繝ｫ
-echo compile
-g++ -g ^
-    -I"%WORKING_PATH%\library\include" ^
-    -DDX_GCC_COMPILE ^
-    -c %WORKING_PATH%\program\main.cpp ^
-    -o .\main.o
+rem makeフォルダを作成
+if not exist %MAKE_DIR% (
+    mkdir %MAKE_DIR%
+)
 
-rem 繝ｪ繝ｳ繧ｯ
-echo link
-g++ .\main.o ^
-    -o %WORKING_PATH%\rom\test.exe ^
-    -L"%WORKING_PATH%\library\include\DxLib" ^
-    -mwindows ^
-    -lDxLib ^
-    -lDxUseCLib ^
-    -lDxDrawFunc ^
-    -ljpeg ^
-    -lpng ^
-    -lzlib ^
-    -ltiff ^
-    -ltheora_static ^
-    -lvorbis_static ^
-    -lvorbisfile_static ^
-    -logg_static ^
-    -lbulletdynamics ^
-    -lbulletcollision ^
-    -lbulletmath ^
-    -lopusfile ^
-    -lopus ^
-    -lsilk_common ^
-    -lcelt
+cd %MAKE_DIR%
 
-del .\main.o
+rem cmakeでなんかファイルいっぱい作る
+cmake .. -G "MinGW Makefiles" -D CMAKE_PROJECT_NAME="%PROJECT_NAME%"
+if %errorlevel% neq 0 (
+    pause
+    exit /b 1
+)
 
+rem ビルド
+cmake --build .
+if %errorlevel% neq 0 (
+    pause
+    exit /b 1
+)
+
+rem 実行ファイルを移動させる
+echo %EXE_FILE%
+if not exist %EXE_FILE% (
+    echo 実行ファイルがありません
+    pause
+    exit /b 1
+)
+
+move %EXE_FILE% %ROM_DIR%
+
+exit /b 0
