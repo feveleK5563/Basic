@@ -1,34 +1,33 @@
+//------------------------------------------------------------------------------
+// main.cpp
+// これが無いとなんもなんない
+//------------------------------------------------------------------------------
 
-#include <iostream>
-#include "test.hpp"
+#include <crtdbg.h>
+
+#include "DxLib/DxLib.h"
+#include "system\mainSystem.h"
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-    SetOutApplicationLogValidFlag(false);
+    // メモリリーク検出
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-    // ウィンドウモード
-    ChangeWindowMode(true);
-    // ウインドウのサイズを手動で変更できず、且つウインドウのサイズに合わせて拡大もしないようにする
-    SetWindowSizeChangeEnableFlag(FALSE, FALSE);
-    // ウィンドウサイズ(解像度以下に設定)
-    SetWindowSize(1280, 720);
-
-    //画面解像度とカラービット数
-    SetGraphMode(1280, 720, 32);
-
-    // 初期化と裏画面化
-    if (DxLib_Init() == -1 || SetDrawScreen(DX_SCREEN_BACK) != 0)
+    // メインシステム起動
+    MainSystem ms;
+    if (!ms.Initialize())
     {
         return 1;
     }
 
-    Test();
+    // ループ
+    ms.MainLoop();
 
-    // キー入力待ち
-    WaitKey();
-
-    // DXライブラリ終了
-    DxLib_End();
+    // 終了
+    if (!ms.Finalize())
+    {
+        return 1;
+    }
 
     return 0;
 }

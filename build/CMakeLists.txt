@@ -17,8 +17,12 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../program/include)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/../program/library/lib/DxLib)
 
 # ソースファイルを全部さらってきて追加
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/../program/source SOURCE)
-add_executable(${CMAKE_PROJECT_NAME} ${SOURCE})
+file(GLOB SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/../program/source/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../program/source/*/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../program/source/*/*/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../program/source/*/*/*/*.cpp")
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
 
 # ライブラリをリンク
 target_link_libraries(
