@@ -1,17 +1,18 @@
 //------------------------------------------------------------------------------
-// mainSystem.cpp
+// mainSystem_task.cpp
 // DXライブラリの起動とメインループ実行
 //------------------------------------------------------------------------------
 
 #include <assert.h>
 
 #include "DxLib/DxLib.h"
-#include "system/mainSystem.h"
+#include "system/mainSystem_task.h"
 
 class MainSystem_Impl
 {
 public:
-    MainSystem_Impl()
+    MainSystem_Impl(TaskBase* task)
+        : task_(task)
     {
     }
 
@@ -52,16 +53,20 @@ public:
         return true;
     }
 
-    // メインループ
-    void MainLoop()
+    // 更新
+    void Update()
     {
-        while (ScreenFlip() == 0 &&                 // 裏画面を表画面に反映
-               ProcessMessage() == 0 &&             // メッセージ処理
-               ClearDrawScreen() == 0 &&            // 画面をクリア
-               CheckHitKey(KEY_INPUT_ESCAPE) == 0)  // ESCキーを押してない
+        if (ScreenFlip() != 0 ||                // 裏画面を表画面に反映
+            ProcessMessage() != 0 ||            // メッセージ処理
+            ClearDrawScreen() != 0 ||           // 画面をクリア
+            CheckHitKey(KEY_INPUT_ESCAPE) != 0) // ESCキー押下判定
         {
-            DrawCircle(640, 340, 100, GetColor(255, 255, 255), true);
+            // 終了（タスクシステムも道連れ）
+            TaskSystem::KillAllTask();
+            return;
         }
+
+        DrawCircle(640, 340, 100, GetColor(255, 255, 255), true);
     }
 
 private:
@@ -107,38 +112,42 @@ private:
         // 解像度とカラービット数設定
         SetGraphMode(window_size_x, window_size_y, 32);
     }
+
+private:
+    TaskBase* task_ = nullptr;
 };
 
 static MainSystem_Impl* impl = nullptr;
 
 //------------------------------------------------------------------------------
 
-MainSystem::MainSystem()
+MainSystem_Task::MainSystem_Task()
+    : TaskBase()
 {
     assert(!impl);
-    impl = new MainSystem_Impl;
+    impl = new MainSystem_Impl(this);
 }
 
-MainSystem::~MainSystem()
+MainSystem_Task::~MainSystem_Task()
 {
     assert(impl);
     delete impl;
 }
 
-bool MainSystem::Initialize()
+void MainSystem_Task::Initialize()
 {
     assert(impl);
-    return impl->Initialize();
+    impl->Initialize();
 }
 
-bool MainSystem::Finalize()
+void MainSystem_Task::Finalize()
 {
     assert(impl);
-    return impl->Finalize();
+    impl->Finalize();
 }
 
-void MainSystem::MainLoop()
+void MainSystem_Task::Update()
 {
     assert(impl);
-    impl->MainLoop();
+    impl->Update();
 }
