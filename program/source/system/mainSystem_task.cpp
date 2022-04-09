@@ -3,10 +3,9 @@
 // DXライブラリの起動とメインループ実行
 //------------------------------------------------------------------------------
 
-#include <assert.h>
-
 #include "DxLib/DxLib.h"
 #include "system/mainSystem_task.h"
+#include "util/various.hpp"
 
 class MainSystem_Impl
 {
@@ -124,30 +123,30 @@ static MainSystem_Impl* impl = nullptr;
 MainSystem_Task::MainSystem_Task()
     : TaskBase()
 {
-    assert(!impl);
+    ASSERT(!impl);
     impl = new MainSystem_Impl(this);
 }
 
 MainSystem_Task::~MainSystem_Task()
 {
-    assert(impl);
+    ASSERT(impl);
     delete impl;
 }
 
 void MainSystem_Task::Initialize()
 {
-    assert(impl);
+    ASSERT(impl);
     impl->Initialize();
 }
 
 void MainSystem_Task::Finalize()
 {
-    assert(impl);
+    ASSERT(impl);
     impl->Finalize();
 }
 
 void MainSystem_Task::Update()
 {
-    assert(impl);
+    ASSERT(impl);
     impl->Update();
 }

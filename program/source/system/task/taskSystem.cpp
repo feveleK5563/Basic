@@ -4,7 +4,6 @@
 //------------------------------------------------------------------------------
 
 #include <algorithm>
-#include <assert.h>
 #include <memory>
 #include <string.h>
 #include <unordered_map>
@@ -13,6 +12,7 @@
 #include "system/mainSystem_task.h"
 #include "system/task/taskBase.h"
 #include "system/task/taskSystem.h"
+#include "util/various.hpp"
 
 class TaskSystem_Impl
 {
@@ -251,47 +251,47 @@ static TaskSystem_Impl* impl = nullptr;
 
 void TaskSystem::Initialize()
 {
-    assert(!impl);
+    ASSERT(!impl);
     impl = new TaskSystem_Impl;
     impl->Initialize();
 }
 
 void TaskSystem::Finalize()
 {
-    assert(impl);
+    ASSERT(impl);
     impl->Finalize();
     delete impl;
 }
 
 void TaskSystem::MainLoop()
 {
-    assert(impl);
+    ASSERT(impl);
     impl->MainLoop();
 }
 
 void TaskSystem::KillAllTask()
 {
-    assert(impl);
+    ASSERT(impl);
     impl->KillAllTask();
 }
 
 template<class T>
 T* TaskSystem::CreateTask()
 {
-    assert(impl);
+    ASSERT(impl);
     return impl->CreateTask<T>();
 }
 
 int TaskSystem::GetTaskNum(TaskGroup group)
 {
-    assert(impl);
+    ASSERT(impl);
     return impl->GetTaskNum(group);
 }
 
 template<class T>
 bool TaskSystem::GetTask(TaskGroup group, const T* task_single)
 {
-    assert(impl);
+    ASSERT(impl);
     return impl->GetTask(group, task_single);
 }
 
@@ -299,6 +299,6 @@ template<class T>
 bool TaskSystem::GetTaskArray(
     TaskGroup group, const T** task_array, int size)
 {
-    assert(impl);
+    ASSERT(impl);
     return impl->GetTaskArray(group, task_array, size);
 }
