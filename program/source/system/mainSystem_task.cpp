@@ -20,7 +20,7 @@ public:
     }
 
     // 初期化
-    bool Initialize()
+    void Initialize()
     {
         // Log.txtが作られないようにする
         SetOutApplicationLogValidFlag(false);
@@ -35,21 +35,19 @@ public:
         // 初期化と裏画面化
         if (DxLib_Init() == -1 || SetDrawScreen(DX_SCREEN_BACK) != 0)
         {
-            return false;
+            DEBUG_LOG("初期化に失敗しました");
+            ASSERT(false);
         }
-
-        return true;
     }
 
     // 終了処理
-    bool Finalize()
+    void Finalize()
     {
         if (DxLib_End() == -1)
         {
-            return false;
+            DEBUG_LOG("終了に失敗しました");
+            ASSERT(false);
         }
-
-        return true;
     }
 
     // 更新
