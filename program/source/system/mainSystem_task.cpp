@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
 // mainSystem_task.cpp
-// DXライブラリの起動とメインループ実行
+// DXライブラリの起動と更新
 //------------------------------------------------------------------------------
 
 #include "DxLib/DxLib.h"
@@ -10,8 +10,7 @@
 class MainSystem_Impl
 {
 public:
-    MainSystem_Impl(TaskBase* task)
-        : task_(task)
+    MainSystem_Impl()
     {
     }
 
@@ -29,13 +28,16 @@ public:
         // TODO 本来は設定管理システムに問い合わせる
         SetScreen(false, 1280, 720);
 
+        // ScreenFlip を実行しても垂直同期信号を待たない
+        SetWaitVSyncFlag(false) ;
+
         // ウィンドウタイトルを付ける
         SetWindowText("Basic");
 
         // 初期化と裏画面化
         if (DxLib_Init() == -1 || SetDrawScreen(DX_SCREEN_BACK) != 0)
         {
-            DEBUG_LOG("初期化に失敗しました");
+            DEBUG_LOG("Failed to initialize DxLib.");
             ASSERT(false);
         }
     }
@@ -45,7 +47,7 @@ public:
     {
         if (DxLib_End() == -1)
         {
-            DEBUG_LOG("終了に失敗しました");
+            DEBUG_LOG("Failed to finalize DxLib.");
             ASSERT(false);
         }
     }
@@ -63,7 +65,28 @@ public:
             return;
         }
 
-        DrawCircle(640, 340, 100, GetColor(255, 255, 255), true);
+        static int x = 0;
+        static bool lr = false;
+        int speed = 6;
+        DrawCircle(x, 340, 100, GetColor(255, 255, 255), true);
+        if (!lr)
+        {
+            // 右移動
+            x += speed;
+            if (x >= 1280)
+            {
+                lr = true;
+            }
+        }
+        else
+        {
+            // 左移動
+            x -= speed;
+            if (x <= 0)
+            {
+                lr = false;
+            }
+        }
     }
 
 private:
@@ -109,9 +132,6 @@ private:
         // 解像度とカラービット数設定
         SetGraphMode(window_size_x, window_size_y, 32);
     }
-
-private:
-    TaskBase* task_ = nullptr;
 };
 
 static MainSystem_Impl* impl = nullptr;
@@ -122,7 +142,7 @@ MainSystem_Task::MainSystem_Task()
     : TaskBase()
 {
     ASSERT(!impl);
-    impl = new MainSystem_Impl(this);
+    impl = new MainSystem_Impl();
 }
 
 MainSystem_Task::~MainSystem_Task()

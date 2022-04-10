@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "system/fps_task.h"
 #include "system/mainSystem_task.h"
 #include "system/task/taskBase.h"
 #include "system/task/taskSystem.h"
@@ -33,6 +34,7 @@ public:
     {
         // システム系タスクを作成する
         CreateTask<MainSystem_Task>();
+        CreateTask<Fps_Task>();
     }
 
     // 終了処理
