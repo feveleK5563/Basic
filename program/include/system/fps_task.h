@@ -31,6 +31,9 @@ public:
 
 struct Fps
 {
+    // 垂直同期設定（DXライブラリ起動前にしか設定できない）
+    static void SetUseVSync(bool b);
+
     // 経過秒数取得
     static float GetDeltaTime();
 };

@@ -4,6 +4,7 @@
 //------------------------------------------------------------------------------
 
 #include "DxLib/DxLib.h"
+#include "system/fps_task.h"
 #include "system/mainSystem_task.h"
 #include "util/various.hpp"
 
@@ -28,8 +29,8 @@ public:
         // TODO 本来は設定管理システムに問い合わせる
         SetScreen(false, 1280, 720);
 
-        // ScreenFlip を実行しても垂直同期信号を待たない
-        SetWaitVSyncFlag(false) ;
+        // 垂直同期設定
+        Fps::SetUseVSync(true);
 
         // ウィンドウタイトルを付ける
         SetWindowText("Basic");
@@ -65,26 +66,36 @@ public:
             return;
         }
 
-        static int x = 0;
-        static bool lr = false;
-        int speed = 6;
-        DrawCircle(x, 340, 100, GetColor(255, 255, 255), true);
-        if (!lr)
+        // 画像を左右に動かす
+        static int graph_handle = -1;
+        if (graph_handle == -1)
         {
-            // 右移動
-            x += speed;
-            if (x >= 1280)
-            {
-                lr = true;
-            }
+            graph_handle = LoadGraph("resource/aoi.png");
+            DEBUG_LOG("GRAPH_HANDLE : %d\n", graph_handle);
         }
         else
         {
-            // 左移動
-            x -= speed;
-            if (x <= 0)
+            static float x = 0;
+            static bool lr = false;
+            float speed = (1280.f / 60.f) * 0.5f;
+            DrawGraph(x - 160, 340, graph_handle, true);
+            if (!lr)
             {
-                lr = false;
+                // 右移動
+                x += speed;
+                if (x >= 1280)
+                {
+                    lr = true;
+                }
+            }
+            else
+            {
+                // 左移動
+                x -= speed;
+                if (x <= 0)
+                {
+                    lr = false;
+                }
             }
         }
     }

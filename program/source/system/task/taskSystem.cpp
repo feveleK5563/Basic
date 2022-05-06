@@ -33,8 +33,8 @@ public:
     void Initialize()
     {
         // システム系タスクを作成する
-        CreateTask<MainSystem_Task>();
         CreateTask<Fps_Task>();
+        CreateTask<MainSystem_Task>();
     }
 
     // 終了処理
