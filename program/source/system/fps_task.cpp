@@ -1,10 +1,7 @@
 //------------------------------------------------------------------------------
 // fps_task.cpp
-// FPS制御
+// FPS計算
 //------------------------------------------------------------------------------
-
-#include <chrono>
-#include <thread>
 
 #include "DxLib/DxLib.h"
 #include "system/fps_task.h"
@@ -28,6 +25,11 @@ public:
 
         // 最初の経過時間は適当に設定
         delta_time_ = 0.000001f;
+
+#ifdef _DEBUG
+        // FPS計測用
+        fps_check_time_ = GetNowHiPerformanceCount();
+#endif
     }
 
     void Finalize()
@@ -36,52 +38,28 @@ public:
 
     void Update()
     {
-        if (is_use_vsync)
-        {
-            return;
-        }
-
         // 現時刻を取得して、差分を計算
         LONGLONG current_time = GetNowHiPerformanceCount();
         LONGLONG dif_time = current_time - check_time_;
 
         // 前回取得した時間からの経過時間を秒に変換
         // (マイクロ秒単位なので 1000000 で割る)
-        delta_time_ = dif_time / MIC_SEC;
-
-        // フレーム数カウント
-        if (fps_count_ == FPS_COUNT)
-        {
-            // 1秒毎の平均を計算
-            fps_ = MIC_SEC / (dif_time / (float)FPS_COUNT);
-            fps_count_ = 0;
-        }
-        ++fps_count_;
-
-        // 待機時間計算
-        if (dif_time < MIN_FREAM_TIME)
-        {
-            // 待機
-            std::this_thread::sleep_for(
-                std::chrono::microseconds(MIN_FREAM_TIME - dif_time));
-        }
-        else
-        {
-            DEBUG_LOG("DIF_TIME : %d\n", dif_time);
-        }
-        check_time_ = GetNowHiPerformanceCount();
+        delta_time_ = dif_time / MIC_SEC_F;
+        check_time_ = current_time;
 
 #ifdef _DEBUG
-        DrawFormatString(0, 0, GetColor(255, 255, 255), "%d", MIN_FREAM_TIME);
-        DrawFormatString(0, 15, GetColor(255, 255, 255), "%d", dif_time);
-#endif
-    }
+        // フレーム数カウント
+        ++fps_count_;
+        if (current_time - fps_check_time_ > MIC_SEC)
+        {
+            // 1秒毎の処理回数を表示
+            fps_ = fps_count_;
+            fps_count_ = 0;
+            fps_check_time_ = current_time;
+        }
 
-    // 垂直同期設定
-    void SetUseVSync(bool b)
-    {
-        is_use_vsync = b;
-        SetWaitVSyncFlag(b);
+        DrawFormatString(0, 0, GetColor(255, 255, 255), "FPS:%d", fps_);
+#endif
     }
 
     // フレーム時間取得
@@ -91,16 +69,17 @@ public:
     }
 
 private:
-    static constexpr LONGLONG FPS_COUNT = 60;
     static constexpr LONGLONG MIC_SEC = 1000000;
-    static constexpr LONGLONG MIN_FREAM_TIME = (MIC_SEC / FPS_COUNT);
+    static constexpr float MIC_SEC_F = 1000000.f;
 
-    bool is_use_vsync = false;
+    LONGLONG check_time_ = 0;
+    float delta_time_ = 0.f;
 
-    LONGLONG check_time_    = 0;
-    int fps_count_          = 0;
-    float delta_time_       = 0.f;
-    float fps_              = 0.f;
+#ifdef _DEBUG
+    LONGLONG fps_check_time_ = 0;
+    int fps_count_ = 0;
+    int fps_ = 0;
+#endif
 };
 
 static Fps_Impl* impl = nullptr;
@@ -139,14 +118,6 @@ void Fps_Task::Update()
 }
 
 //------------------------------------------------------------------------------
-
-void Fps::SetUseVSync(bool b)
-{
-    if (impl)
-    {
-        impl->SetUseVSync(b);
-    }
-}
 
 float Fps::GetDeltaTime()
 {

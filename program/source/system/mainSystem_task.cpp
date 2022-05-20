@@ -30,7 +30,7 @@ public:
         SetScreen(false, 1280, 720);
 
         // 垂直同期設定
-        Fps::SetUseVSync(true);
+        SetWaitVSyncFlag(false);
 
         // ウィンドウタイトルを付ける
         SetWindowText("Basic");
@@ -77,7 +77,7 @@ public:
         {
             static float x = 0;
             static bool lr = false;
-            float speed = (1280.f / 60.f) * 0.5f;
+            float speed = 1280.f * Fps::GetDeltaTime();
             DrawGraph(x - 160, 340, graph_handle, true);
             if (!lr)
             {
