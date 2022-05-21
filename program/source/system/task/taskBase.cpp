@@ -16,11 +16,6 @@ TaskBase::~TaskBase()
 {
 }
 
-// 更新処理
-void TaskBase::Update()
-{
-}
-
 // タスク状態設定
 void TaskBase::SetState(TaskState state)
 {

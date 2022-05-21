@@ -24,7 +24,7 @@ public:
     virtual void Finalize() = 0;
 
     // 更新処理
-    virtual void Update();
+    virtual void Update() = 0;
 
     //----------------------------------------------------------------------
 
