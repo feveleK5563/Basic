@@ -13,7 +13,7 @@
 #include "system/mainSystem_task.h"
 #include "system/task/taskBase.h"
 #include "system/task/taskSystem.h"
-#include "util/various.hpp"
+#include "util/debugUtil.hpp"
 
 class TaskSystem_Impl
 {
@@ -77,6 +77,8 @@ public:
         T* task = new T;
         task_list_.emplace_back(task);
         is_sorted_ = false;
+    
+        DEBUG_LOG("CreateTask : group(%d)\n", task->GetGroup());
 
         return task;
     }

@@ -6,7 +6,7 @@
 #include "DxLib/DxLib.h"
 #include "system/deltaTime_task.h"
 #include "system/mainSystem_task.h"
-#include "util/various.hpp"
+#include "util/debugUtil.hpp"
 
 class MainSystem_Impl
 {

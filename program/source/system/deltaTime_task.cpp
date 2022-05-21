@@ -5,7 +5,7 @@
 
 #include "DxLib/DxLib.h"
 #include "system/deltaTime_task.h"
-#include "util/various.hpp"
+#include "util/debugUtil.hpp"
 
 class DeltaTime_Impl
 {
