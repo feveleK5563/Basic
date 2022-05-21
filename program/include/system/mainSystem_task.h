@@ -11,7 +11,7 @@ class MainSystem_Task : public TaskBase
 {
 public:
     explicit MainSystem_Task();
-    ~MainSystem_Task();
+    virtual ~MainSystem_Task();
 
     // 初期化
     void Initialize() override;
@@ -27,4 +27,8 @@ public:
     {
         return TaskGroup::MainSystem;
     }
+
+private:
+    class Impl;
+    static Impl* impl_;
 };

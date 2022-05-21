@@ -306,3 +306,10 @@ bool TaskSystem::GetTaskArray(
     ASSERT(impl);
     return impl->GetTaskArray(group, task_array, size);
 }
+
+//------------------------------------------------------------------------------
+
+float DeltaTime::Get()
+{
+    return DeltaTime_Task::GetDeltaTime();
+}

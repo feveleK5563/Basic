@@ -4,18 +4,17 @@
 //------------------------------------------------------------------------------
 
 #include "DxLib/DxLib.h"
-#include "system/deltaTime_task.h"
 #include "system/mainSystem_task.h"
 #include "util/debugUtil.hpp"
 
-class MainSystem_Impl
+class MainSystem_Task::Impl
 {
 public:
-    MainSystem_Impl()
+    Impl()
     {
     }
 
-    ~MainSystem_Impl()
+    ~Impl()
     {
     }
 
@@ -145,37 +144,37 @@ private:
     }
 };
 
-static MainSystem_Impl* impl = nullptr;
-
 //------------------------------------------------------------------------------
+
+MainSystem_Task::Impl* MainSystem_Task::impl_ = nullptr;
 
 MainSystem_Task::MainSystem_Task()
     : TaskBase()
 {
-    ASSERT(!impl);
-    impl = new MainSystem_Impl();
+    ASSERT(!impl_);
+    impl_ = new Impl();
 }
 
 MainSystem_Task::~MainSystem_Task()
 {
-    ASSERT(impl);
-    delete impl;
+    ASSERT(impl_);
+    delete impl_;
 }
 
 void MainSystem_Task::Initialize()
 {
-    ASSERT(impl);
-    impl->Initialize();
+    ASSERT(impl_);
+    impl_->Initialize();
 }
 
 void MainSystem_Task::Finalize()
 {
-    ASSERT(impl);
-    impl->Finalize();
+    ASSERT(impl_);
+    impl_->Finalize();
 }
 
 void MainSystem_Task::Update()
 {
-    ASSERT(impl);
-    impl->Update();
+    ASSERT(impl_);
+    impl_->Update();
 }

@@ -49,3 +49,12 @@ public:
     template<class T>
     static bool GetTaskArray(TaskGroup group, const T** task_array, int size);
 };
+
+//------------------------------------------------------------------------------
+
+// デルタタイムの外部提供用
+struct DeltaTime
+{
+    // デルタタイム取得
+    static float Get();
+};

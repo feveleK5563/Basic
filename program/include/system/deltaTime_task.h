@@ -11,7 +11,7 @@ class DeltaTime_Task : public TaskBase
 {
 public:
     explicit DeltaTime_Task();
-    ~DeltaTime_Task();
+    virtual ~DeltaTime_Task();
 
     // 初期化
     void Initialize() override;
@@ -27,10 +27,13 @@ public:
     {
         return TaskGroup::Fps;
     }
-};
 
-struct DeltaTime
-{
-    // 経過秒数取得
-    static float Get();
+    //-----------------------------------------------------
+
+    // デルタタイム取得
+    static float GetDeltaTime();
+
+private:
+    class Impl;
+    static Impl* impl_;
 };

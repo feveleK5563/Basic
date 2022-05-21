@@ -7,14 +7,14 @@
 #include "system/deltaTime_task.h"
 #include "util/debugUtil.hpp"
 
-class DeltaTime_Impl
+class DeltaTime_Task::Impl
 {
 public:
-    DeltaTime_Impl()
+    Impl()
     {
     }
 
-    ~DeltaTime_Impl()
+    ~Impl()
     {
     }
 
@@ -82,48 +82,46 @@ private:
 #endif
 };
 
-static DeltaTime_Impl* impl = nullptr;
-
 //------------------------------------------------------------------------------
+
+DeltaTime_Task::Impl* DeltaTime_Task::impl_ = nullptr;
 
 DeltaTime_Task::DeltaTime_Task()
     : TaskBase()
 {
-    ASSERT(!impl);
-    impl = new DeltaTime_Impl();
+    ASSERT(!impl_);
+    impl_ = new Impl();
 }
 
 DeltaTime_Task::~DeltaTime_Task()
 {
-    ASSERT(impl);
-    delete impl;
+    ASSERT(impl_);
+    delete impl_;
 }
 
 void DeltaTime_Task::Initialize()
 {
-    ASSERT(impl);
-    impl->Initialize();
+    ASSERT(impl_);
+    impl_->Initialize();
 }
 
 void DeltaTime_Task::Finalize()
 {
-    ASSERT(impl);
-    impl->Finalize();
+    ASSERT(impl_);
+    impl_->Finalize();
 }
 
 void DeltaTime_Task::Update()
 {
-    ASSERT(impl);
-    impl->Update();
+    ASSERT(impl_);
+    impl_->Update();
 }
 
-//------------------------------------------------------------------------------
-
-float DeltaTime::Get()
+float DeltaTime_Task::GetDeltaTime()
 {
-    if (impl)
+    if (impl_)
     {
-        return impl->GetDeltaTime();
+        return impl_->GetDeltaTime();
     }
 
     return 0.f;
