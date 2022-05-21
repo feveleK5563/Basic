@@ -4,16 +4,16 @@
 //------------------------------------------------------------------------------
 
 #include "<name>_task.h"
-#include "util/various.hpp"
+#include "util/debugUtil.hpp"
 
-class <Name>_Impl
+class <Name>_Task::Impl
 {
 public:
-    <Name>_Impl()
+    Impl()
     {
     }
 
-    ~<Name>_Impl()
+    ~Impl()
     {
     }
 
@@ -30,37 +30,36 @@ public:
     }
 };
 
-static <Name>_Impl* impl = nullptr;
-
 //------------------------------------------------------------------------------
 
 <Name>_Task::<Name>_Task()
     : TaskBase()
+    , impl_(nullptr)
 {
-    ASSERT(!impl);
-    impl = new <Name>_Impl();
+    ASSERT(!impl_);
+    impl_ = new Impl();
 }
 
 <Name>_Task::~<Name>_Task()
 {
-    ASSERT(impl);
-    delete impl;
+    ASSERT(impl_);
+    delete impl_;
 }
 
 void <Name>_Task::Initialize()
 {
-    ASSERT(impl);
-    impl->Initialize();
+    ASSERT(impl_);
+    impl_->Initialize();
 }
 
 void <Name>_Task::Finalize()
 {
-    ASSERT(impl);
-    impl->Finalize();
+    ASSERT(impl_);
+    impl_->Finalize();
 }
 
 void <Name>_Task::Update()
 {
-    ASSERT(impl);
-    impl->Update();
+    ASSERT(impl_);
+    impl_->Update();
 }

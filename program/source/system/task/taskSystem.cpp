@@ -15,6 +15,8 @@
 #include "system/task/taskSystem.h"
 #include "util/debugUtil.hpp"
 
+#include "test/test_task.h"
+
 class TaskSystem_Impl
 {
 public:
@@ -35,6 +37,9 @@ public:
         // システム系タスクを作成する
         CreateTask<MainSystem_Task>();
         CreateTask<DeltaTime_Task>();
+
+        // ゲーム内タスク生成
+        CreateTask<Test_Task>();
     }
 
     // 終了処理

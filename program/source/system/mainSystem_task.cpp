@@ -64,39 +64,6 @@ public:
             TaskSystem::KillAllTask();
             return;
         }
-
-        // 画像を左右に動かす
-        static int graph_handle = -1;
-        if (graph_handle == -1)
-        {
-            graph_handle = LoadGraph("resource/aoi.png");
-            DEBUG_LOG("GRAPH_HANDLE : %d\n", graph_handle);
-        }
-        else
-        {
-            static float x = 0;
-            static bool lr = false;
-            float speed = 1280.f * DeltaTime::Get();
-            DrawGraph(x - 160, 340, graph_handle, true);
-            if (!lr)
-            {
-                // 右移動
-                x += speed;
-                if (x >= 1280)
-                {
-                    lr = true;
-                }
-            }
-            else
-            {
-                // 左移動
-                x -= speed;
-                if (x <= 0)
-                {
-                    lr = false;
-                }
-            }
-        }
     }
 
 private:

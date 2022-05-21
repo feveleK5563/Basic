@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-// <name>_task.h
+// test_task.h
 // 説明
 //------------------------------------------------------------------------------
 
@@ -7,11 +7,11 @@
 
 #include "system/task/taskBase.h"
 
-class <Name>_Task : public TaskBase
+class Test_Task : public TaskBase
 {
 public:
-    explicit <Name>_Task();
-    virtual ~<Name>_Task();
+    explicit Test_Task();
+    virtual ~Test_Task();
 
     // 初期化
     void Initialize() override;
@@ -25,7 +25,7 @@ public:
     // グループ取得
     TaskGroup GetGroup() const override
     {
-        return TaskGroup::<Name>;
+        return TaskGroup::Test;
     }
 
 private:
