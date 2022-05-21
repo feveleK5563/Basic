@@ -4,7 +4,7 @@
 //------------------------------------------------------------------------------
 
 #include "DxLib/DxLib.h"
-#include "system/fps_task.h"
+#include "system/deltaTime_task.h"
 #include "system/mainSystem_task.h"
 #include "util/various.hpp"
 
@@ -77,7 +77,7 @@ public:
         {
             static float x = 0;
             static bool lr = false;
-            float speed = 1280.f * Fps::GetDeltaTime();
+            float speed = 1280.f * DeltaTime::Get();
             DrawGraph(x - 160, 340, graph_handle, true);
             if (!lr)
             {

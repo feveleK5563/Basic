@@ -4,17 +4,17 @@
 //------------------------------------------------------------------------------
 
 #include "DxLib/DxLib.h"
-#include "system/fps_task.h"
+#include "system/deltaTime_task.h"
 #include "util/various.hpp"
 
-class Fps_Impl
+class DeltaTime_Impl
 {
 public:
-    Fps_Impl()
+    DeltaTime_Impl()
     {
     }
 
-    ~Fps_Impl()
+    ~DeltaTime_Impl()
     {
     }
 
@@ -82,36 +82,36 @@ private:
 #endif
 };
 
-static Fps_Impl* impl = nullptr;
+static DeltaTime_Impl* impl = nullptr;
 
 //------------------------------------------------------------------------------
 
-Fps_Task::Fps_Task()
+DeltaTime_Task::DeltaTime_Task()
     : TaskBase()
 {
     ASSERT(!impl);
-    impl = new Fps_Impl();
+    impl = new DeltaTime_Impl();
 }
 
-Fps_Task::~Fps_Task()
+DeltaTime_Task::~DeltaTime_Task()
 {
     ASSERT(impl);
     delete impl;
 }
 
-void Fps_Task::Initialize()
+void DeltaTime_Task::Initialize()
 {
     ASSERT(impl);
     impl->Initialize();
 }
 
-void Fps_Task::Finalize()
+void DeltaTime_Task::Finalize()
 {
     ASSERT(impl);
     impl->Finalize();
 }
 
-void Fps_Task::Update()
+void DeltaTime_Task::Update()
 {
     ASSERT(impl);
     impl->Update();
@@ -119,7 +119,7 @@ void Fps_Task::Update()
 
 //------------------------------------------------------------------------------
 
-float Fps::GetDeltaTime()
+float DeltaTime::Get()
 {
     if (impl)
     {

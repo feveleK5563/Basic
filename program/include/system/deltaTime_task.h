@@ -1,17 +1,17 @@
 //------------------------------------------------------------------------------
-// fps_task.h
-// FPS計算
+// deltaTime_task.h
+// デルタタイム計算
 //------------------------------------------------------------------------------
 
 #pragma once
 
 #include "system/task/taskBase.h"
 
-class Fps_Task : public TaskBase
+class DeltaTime_Task : public TaskBase
 {
 public:
-    explicit Fps_Task();
-    ~Fps_Task();
+    explicit DeltaTime_Task();
+    ~DeltaTime_Task();
 
     // 初期化
     void Initialize() override;
@@ -29,8 +29,8 @@ public:
     }
 };
 
-struct Fps
+struct DeltaTime
 {
     // 経過秒数取得
-    static float GetDeltaTime();
+    static float Get();
 };
