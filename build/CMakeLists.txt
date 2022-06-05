@@ -1,10 +1,10 @@
 # g++のオプション指定
 if(${IS_DEBUG_BUILD})
     # デバッグビルド
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g -DDX_GCC_COMPILE -D_DEBUG")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 --input-charset=utf-8 --exec-charset=cp932 -g -DDX_GCC_COMPILE -D_DEBUG")
 else()
     # リリースビルド
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -DDX_GCC_COMPILE -mwindows")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 --input-charset=utf-8 --exec-charset=cp932 -DDX_GCC_COMPILE -mwindows")
 endif()
 
 # CMakeのバージョン指定とプロジェクト設定

@@ -39,6 +39,9 @@ public:
         // 垂直同期設定
         SetWaitVSyncFlag(false);
 
+        // 非アクティブでも動作するように
+        SetAlwaysRunFlag(true);
+
         // ウィンドウタイトルを付ける
         SetWindowText("Basic");
 

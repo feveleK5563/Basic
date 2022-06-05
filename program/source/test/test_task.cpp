@@ -29,7 +29,7 @@ public:
     void Initialize() override
     {
         graph_handle_ = LoadGraph("resource/aoi.png");
-        DEBUG_LOG("GRAPH_HANDLE : %d\n", graph_handle_);
+        DEBUG_LOG("画像管理番号 : %d\n", graph_handle_);
     }
 
     void Finalize() override
