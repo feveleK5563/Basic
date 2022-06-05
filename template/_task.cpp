@@ -3,63 +3,53 @@
 // 説明
 //------------------------------------------------------------------------------
 
-#include "<name>_task.h"
+#include "DxLib/DxLib.h"
+#include "system/task/taskBase.h"
 #include "util/debugUtil.hpp"
 
-class <Name>_Task::Impl
+class <Name>::Task : public TaskBase 
 {
 public:
-    Impl()
+    TaskGroup GetGroup() const override
+    {
+        return TaskGroup::;
+    }
+
+public:
+    explicit Task()
+        : TaskBase()
     {
     }
 
-    ~Impl()
+    virtual ~Task()
     {
     }
 
-    void Initialize()
+    void Initialize() override
     {
     }
 
-    void Finalize()
+    void Finalize() override
     {
     }
 
-    void Update()
+    void Update() override
     {
     }
+
+private:
 };
 
 //------------------------------------------------------------------------------
 
-<Name>_Task::<Name>_Task()
-    : TaskBase()
-    , impl_(nullptr)
+<Name> Test::CreateTask()
 {
-    ASSERT(!impl_);
-    impl_ = new Impl();
-}
+    <Name> task_interface;
 
-<Name>_Task::~<Name>_Task()
-{
-    ASSERT(impl_);
-    delete impl_;
-}
-
-void <Name>_Task::Initialize()
-{
-    ASSERT(impl_);
-    impl_->Initialize();
-}
-
-void <Name>_Task::Finalize()
-{
-    ASSERT(impl_);
-    impl_->Finalize();
-}
-
-void <Name>_Task::Update()
-{
-    ASSERT(impl_);
-    impl_->Update();
+    <Name>* task = new Task;
+    if (TaskSystem::AddTask(task))
+    {
+        task_interface.task_ = task;
+    }
+    return task_interface;
 }
