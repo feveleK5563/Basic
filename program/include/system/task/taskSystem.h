@@ -6,6 +6,7 @@
 #pragma once
 
 #include "system/task/taskGroup.hpp"
+#include "system/deltaTime_task.h"
 
 class TaskBase;
 
@@ -34,9 +35,8 @@ public:
 
     //----------------------------------------------------------------------
 
-    // タスクを生成して追加
-    template<class T>
-    static T* CreateTask();
+    // タスクを追加
+    static bool AddTask(TaskBase* task);
 
     // 指定したグループのタスク個数を取得
     static int GetTaskNum(TaskGroup group);
@@ -48,13 +48,4 @@ public:
     // 指定したグループのタスクをまとめて取得
     template<class T>
     static bool GetTaskArray(TaskGroup group, const T** task_array, int size);
-};
-
-//------------------------------------------------------------------------------
-
-// デルタタイムの外部提供用
-struct DeltaTime
-{
-    // デルタタイム取得
-    static float Get();
 };

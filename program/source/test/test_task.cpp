@@ -1,35 +1,43 @@
 //------------------------------------------------------------------------------
 // test_task.cpp
-// 説明
+// テスト
 //------------------------------------------------------------------------------
 
 #include "DxLib/DxLib.h"
+#include "system/task/taskBase.h"
 #include "test/test_task.h"
 #include "util/debugUtil.hpp"
 
-class Test_Task::Impl
+class Test::Task : public TaskBase 
 {
 public:
-    Impl()
+    TaskGroup GetGroup() const override
+    {
+        return TaskGroup::Test;
+    }
+
+public:
+    explicit Task()
+        : TaskBase()
     {
     }
 
-    ~Impl()
+    virtual ~Task()
     {
     }
 
-    void Initialize()
+    void Initialize() override
     {
         graph_handle_ = LoadGraph("resource/aoi.png");
         DEBUG_LOG("GRAPH_HANDLE : %d\n", graph_handle_);
     }
 
-    void Finalize()
+    void Finalize() override
     {
         DeleteGraph(graph_handle_);
     }
 
-    void Update()
+    void Update() override
     {
         if (graph_handle_ == -1)
         {
@@ -38,8 +46,8 @@ public:
         }
 
         // 画像を左右に動かす
-        float speed = 1280.f * DeltaTime::Get();
-        DrawGraph(pos_x_ - 160, 340, graph_handle_, true);
+        float speed = speed_ * DeltaTime::Get();
+        DrawGraph(pos_x_ - 160, pos_y_ - 66, graph_handle_, true);
         if (!left_or_right_)
         {
             // 右移動
@@ -60,42 +68,49 @@ public:
         }
     }
 
+    //-----------------------------------------------------
+
+    void SetPos(float x, float y)
+    {
+        pos_x_ = x;
+        pos_y_ = y;
+    }
+
+    void SetSpeed(float speed)
+    {
+        speed_ = speed;
+    }
+
 private:
     int graph_handle_ = -1;
     float pos_x_ = 0.f;
+    float pos_y_ = 0.f;
     bool left_or_right_ = false;
+    float speed_ = 1280.f;
 };
 
 //------------------------------------------------------------------------------
 
-Test_Task::Test_Task()
-    : TaskBase()
-    , impl_(nullptr)
+Test Test::CreateTask()
 {
-    ASSERT(!impl_);
-    impl_ = new Impl();
+    Test task_interface;
+
+    Task* task = new Task;
+    if (TaskSystem::AddTask(task))
+    {
+        task_interface.task_ = task;
+    }
+    return task_interface;
 }
 
-Test_Task::~Test_Task()
+void Test::SetPos(float x, float y)
 {
-    ASSERT(impl_);
-    delete impl_;
+    ASSERT(task_);
+    task_->SetPos(x, y);
 }
 
-void Test_Task::Initialize()
+void Test::SetSpeed(float speed)
 {
-    ASSERT(impl_);
-    impl_->Initialize();
-}
-
-void Test_Task::Finalize()
-{
-    ASSERT(impl_);
-    impl_->Finalize();
-}
-
-void Test_Task::Update()
-{
-    ASSERT(impl_);
-    impl_->Update();
+    ASSERT(task_);
+    task_->SetSpeed(speed);
 }

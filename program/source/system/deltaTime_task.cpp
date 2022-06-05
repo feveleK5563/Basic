@@ -1,24 +1,32 @@
 //------------------------------------------------------------------------------
-// fps_task.cpp
+// deltaTime_task.cpp
 // デルタタイム計算
 //------------------------------------------------------------------------------
 
 #include "DxLib/DxLib.h"
+#include "system/task/taskBase.h"
 #include "system/deltaTime_task.h"
 #include "util/debugUtil.hpp"
 
-class DeltaTime_Task::Impl
+class DeltaTime::Task : public TaskBase
 {
 public:
-    Impl()
+    TaskGroup GetGroup() const override
+    {
+        return TaskGroup::Fps;
+    }
+
+public:
+    explicit Task()
+        : TaskBase()
     {
     }
 
-    ~Impl()
+    virtual ~Task()
     {
     }
 
-    void Initialize()
+    void Initialize() override
     {
         // システム時間を取得
         check_time_ = GetNowHiPerformanceCount();
@@ -32,11 +40,11 @@ public:
 #endif
     }
 
-    void Finalize()
+    void Finalize() override
     {
     }
 
-    void Update()
+    void Update() override
     {
         // 現時刻を取得して、差分を計算
         LONGLONG current_time = GetNowHiPerformanceCount();
@@ -62,6 +70,8 @@ public:
 #endif
     }
 
+    //-----------------------------------------------------
+
     // フレーム時間取得
     float GetDeltaTime()
     {
@@ -84,44 +94,26 @@ private:
 
 //------------------------------------------------------------------------------
 
-DeltaTime_Task::Impl* DeltaTime_Task::impl_ = nullptr;
+DeltaTime::Task* DeltaTime::task_ = nullptr;
 
-DeltaTime_Task::DeltaTime_Task()
-    : TaskBase()
+DeltaTime DeltaTime::CreateTask()
 {
-    ASSERT(!impl_);
-    impl_ = new Impl();
-}
+    ASSERT(!task_);
+    DeltaTime task_interface;
 
-DeltaTime_Task::~DeltaTime_Task()
-{
-    ASSERT(impl_);
-    delete impl_;
-}
-
-void DeltaTime_Task::Initialize()
-{
-    ASSERT(impl_);
-    impl_->Initialize();
-}
-
-void DeltaTime_Task::Finalize()
-{
-    ASSERT(impl_);
-    impl_->Finalize();
-}
-
-void DeltaTime_Task::Update()
-{
-    ASSERT(impl_);
-    impl_->Update();
-}
-
-float DeltaTime_Task::GetDeltaTime()
-{
-    if (impl_)
+    Task* task = new Task;
+    if (TaskSystem::AddTask(task))
     {
-        return impl_->GetDeltaTime();
+        task_interface.task_ = task;
+    }
+    return task_interface;
+}
+
+float DeltaTime::Get()
+{
+    if (task_)
+    {
+        return task_->GetDeltaTime();
     }
 
     return 0.f;

@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
-// taskSystemCore.cpp
-// タスクシステム コア
+// taskSystem.cpp
+// タスクシステム
 //------------------------------------------------------------------------------
 
 #include <algorithm>
@@ -35,11 +35,18 @@ public:
     void Initialize()
     {
         // システム系タスクを作成する
-        CreateTask<MainSystem_Task>();
-        CreateTask<DeltaTime_Task>();
+        MainSystem::CreateTask();
+        DeltaTime::CreateTask();
 
         // ゲーム内タスク生成
-        CreateTask<Test_Task>();
+        int num = 10;
+        for (int i = 0; i < num; ++i)
+        {
+            Test test = Test::CreateTask();
+            test.SetPos((1280.f / num) * i,
+                        (720.f / num) * i);
+            test.SetSpeed(1280.f);
+        }
     }
 
     // 終了処理
@@ -75,17 +82,20 @@ public:
         }
     }
 
-    // タスクを生成して追加
-    template<class T>
-    T* CreateTask()
+    // タスクを追加
+    bool AddTask(TaskBase* task)
     {
-        T* task = new T;
+        if (!task)
+        {
+            return false;
+        }
+
         task_list_.emplace_back(task);
         is_sorted_ = false;
     
-        DEBUG_LOG("CreateTask : group(%d)\n", task->GetGroup());
+        DEBUG_LOG("AddTask : group(%d)\n", task->GetGroup());
 
-        return task;
+        return true;
     }
 
     // 指定したグループのタスク個数を取得
@@ -284,11 +294,10 @@ void TaskSystem::KillAllTask()
     impl->KillAllTask();
 }
 
-template<class T>
-T* TaskSystem::CreateTask()
+bool TaskSystem::AddTask(TaskBase* task)
 {
     ASSERT(impl);
-    return impl->CreateTask<T>();
+    return impl->AddTask(task);
 }
 
 int TaskSystem::GetTaskNum(TaskGroup group)
@@ -310,11 +319,4 @@ bool TaskSystem::GetTaskArray(
 {
     ASSERT(impl);
     return impl->GetTaskArray(group, task_array, size);
-}
-
-//------------------------------------------------------------------------------
-
-float DeltaTime::Get()
-{
-    return DeltaTime_Task::GetDeltaTime();
 }

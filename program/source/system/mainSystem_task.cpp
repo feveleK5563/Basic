@@ -4,22 +4,30 @@
 //------------------------------------------------------------------------------
 
 #include "DxLib/DxLib.h"
+#include "system/task/taskBase.h"
 #include "system/mainSystem_task.h"
 #include "util/debugUtil.hpp"
 
-class MainSystem_Task::Impl
+class MainSystem::Task : public TaskBase
 {
 public:
-    Impl()
+    TaskGroup GetGroup() const override
+    {
+        return TaskGroup::MainSystem;
+    }
+
+public:
+    explicit Task()
+        : TaskBase()
     {
     }
 
-    ~Impl()
+    virtual ~Task()
     {
     }
 
     // 初期化
-    void Initialize()
+    void Initialize() override
     {
         // Log.txtが作られないようにする
         SetOutApplicationLogValidFlag(false);
@@ -43,7 +51,7 @@ public:
     }
 
     // 終了処理
-    void Finalize()
+    void Finalize() override
     {
         if (DxLib_End() == -1)
         {
@@ -53,7 +61,7 @@ public:
     }
 
     // 更新
-    void Update()
+    void Update() override
     {
         if (ScreenFlip() != 0 ||                // 裏画面を表画面に反映
             ProcessMessage() != 0 ||            // メッセージ処理
@@ -113,35 +121,17 @@ private:
 
 //------------------------------------------------------------------------------
 
-MainSystem_Task::Impl* MainSystem_Task::impl_ = nullptr;
+MainSystem::Task* MainSystem::task_ = nullptr;
 
-MainSystem_Task::MainSystem_Task()
-    : TaskBase()
+MainSystem MainSystem::CreateTask()
 {
-    ASSERT(!impl_);
-    impl_ = new Impl();
-}
+    ASSERT(!task_);
+    MainSystem task_interface;
 
-MainSystem_Task::~MainSystem_Task()
-{
-    ASSERT(impl_);
-    delete impl_;
-}
-
-void MainSystem_Task::Initialize()
-{
-    ASSERT(impl_);
-    impl_->Initialize();
-}
-
-void MainSystem_Task::Finalize()
-{
-    ASSERT(impl_);
-    impl_->Finalize();
-}
-
-void MainSystem_Task::Update()
-{
-    ASSERT(impl_);
-    impl_->Update();
+    Task* task = new Task;
+    if (TaskSystem::AddTask(task))
+    {
+        task_interface.task_ = task;
+    }
+    return task_interface;
 }

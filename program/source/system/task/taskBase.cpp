@@ -5,6 +5,8 @@
 
 #include "system/task/taskBase.h"
 
+//------------------------------------------------------------------------------
+
 // コンストラクタ
 TaskBase::TaskBase()
     : state_(TaskState::Ready)
