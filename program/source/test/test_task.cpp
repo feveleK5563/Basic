@@ -55,6 +55,7 @@ public:
             if (pos_x_ >= 1280)
             {
                 left_or_right_ = true;
+                pos_x_ = 1280;
             }
         }
         else
@@ -64,11 +65,28 @@ public:
             if (pos_x_ <= 0)
             {
                 left_or_right_ = false;
+                pos_x_ = 0;
             }
+        }
+
+        if (pos_x_ < 0 || 1280 < pos_x_)
+        {
+            is_error_pos_ = true;
+        }
+
+        unsigned int color = GetColor(255, 255, 255);
+        if (is_error_pos_)
+        {
+            color = GetColor(255, 128, 128);
         }
     }
 
     //-----------------------------------------------------
+
+    void SetIndex(int index)
+    {
+        index_ = index;
+    }
 
     void SetPos(float x, float y)
     {
@@ -87,6 +105,9 @@ private:
     float pos_y_ = 0.f;
     bool left_or_right_ = false;
     float speed_ = 1280.f;
+
+    int index_ = -1;
+    bool is_error_pos_ = false;
 };
 
 //------------------------------------------------------------------------------
@@ -95,12 +116,18 @@ Test Test::CreateTask()
 {
     Test task_interface;
 
-    Task* task = new Task;
+    Task* task = new Task();
     if (TaskSystem::AddTask(task))
     {
         task_interface.task_ = task;
     }
     return task_interface;
+}
+
+void Test::SetIndex(int index)
+{
+    ASSERT(task_);
+    task_->SetIndex(index);
 }
 
 void Test::SetPos(float x, float y)

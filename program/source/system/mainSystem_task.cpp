@@ -34,7 +34,7 @@ public:
 
         // スクリーン設定
         // TODO 本来は設定管理システムに問い合わせる
-        SetScreen(false, 1280, 720);
+        SetScreen(false, 0, 1280, 720);
 
         // 垂直同期設定
         SetWaitVSyncFlag(false);
@@ -93,7 +93,7 @@ private:
     }
 
     // スクリーン設定
-    void SetScreen(bool is_full_screen,
+    void SetScreen(bool is_full_screen, int display_index,
                    int window_size_x, int window_size_y)
     {
         if (is_full_screen)
@@ -116,6 +116,9 @@ private:
             // ウィンドウサイズ設定
             SetWindowSize(window_size_x, window_size_y);
         }
+
+        // ディスプレイのインデックス設定
+        SetUseDisplayIndex(display_index);
 
         // 解像度とカラービット数設定
         SetGraphMode(window_size_x, window_size_y, 32);

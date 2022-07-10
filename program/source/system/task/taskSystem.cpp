@@ -43,6 +43,7 @@ public:
         for (int i = 0; i < num; ++i)
         {
             Test test = Test::CreateTask();
+            test.SetIndex(i);
             test.SetPos((1280.f / num) * i,
                         (720.f / num) * i);
             test.SetSpeed(1280.f);

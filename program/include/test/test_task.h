@@ -10,6 +10,7 @@ class Test
 public:
     static Test CreateTask();
 
+    void SetIndex(int index);
     void SetPos(float x, float y);
     void SetSpeed(float speed);
 

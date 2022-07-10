@@ -34,10 +34,8 @@ public:
         // 最初の経過時間は適当に設定
         delta_time_ = 0.000001f;
 
-#ifdef _DEBUG
         // FPS計測用
         fps_check_time_ = GetNowHiPerformanceCount();
-#endif
     }
 
     void Finalize() override
@@ -49,13 +47,8 @@ public:
         // 現時刻を取得して、差分を計算
         LONGLONG current_time = GetNowHiPerformanceCount();
         LONGLONG dif_time = current_time - check_time_;
+        dif_time_sample_ += dif_time;
 
-        // 前回取得した時間からの経過時間を秒に変換
-        // (マイクロ秒単位なので 1000000 で割る)
-        delta_time_ = dif_time / MIC_SEC_F;
-        check_time_ = current_time;
-
-#ifdef _DEBUG
         // フレーム数カウント
         ++fps_count_;
         if (current_time - fps_check_time_ > MIC_SEC)
@@ -64,10 +57,29 @@ public:
             fps_ = fps_count_;
             fps_count_ = 0;
             fps_check_time_ = current_time;
+
+            dif_time_average_ = (dif_time_sample_ / fps_);
+            dif_time_sample_ = 0;
         }
 
-        DrawFormatString(0, 0, GetColor(255, 255, 255), "FPS:%d", fps_);
-#endif
+        // 前回取得した時間からの経過時間を秒に変換
+        // (マイクロ秒単位なので 1000000 で割る)
+        if (dif_time_average_ != 0 &&
+            dif_time > dif_time_)
+        {
+            // 平均値から計算
+            delta_time_ = dif_time_average_ / MIC_SEC_F;
+        }
+        else
+        {
+            // 現在の値から計算
+            delta_time_ = dif_time / MIC_SEC_F;
+        }
+        dif_time_ = dif_time;
+        check_time_ = current_time;
+
+        DrawFormatString(0, 0, GetColor(255, 255, 255), "DIF_TIME:%d", dif_time_);
+        DrawFormatString(0, 20, GetColor(255, 255, 255), "DIF_TIME_AVR:%d", dif_time_average_);
     }
 
     //-----------------------------------------------------
@@ -85,11 +97,13 @@ private:
     LONGLONG check_time_ = 0;
     float delta_time_ = 0.f;
 
-#ifdef _DEBUG
+    LONGLONG dif_time_ = 0;
+    LONGLONG dif_time_average_ = 0;
+    LONGLONG dif_time_sample_ = 0;
+
     LONGLONG fps_check_time_ = 0;
     int fps_count_ = 0;
     int fps_ = 0;
-#endif
 };
 
 //------------------------------------------------------------------------------
