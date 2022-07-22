@@ -13,11 +13,11 @@
 // アサート
 #ifdef _DEBUG
     // デバッグ時（有効）
-    #define ASSERT(expr)\
+    #define DEBUG_ASSERT(expr)\
         assert(expr)
 #else
     // リリース時（何もしない）
-    #define ASSERT(expr)
+    #define DEBUG_ASSERT(expr)
 #endif
 
 // ログ出力

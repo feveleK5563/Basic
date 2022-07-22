@@ -49,7 +49,7 @@ public:
         if (DxLib_Init() == -1 || SetDrawScreen(DX_SCREEN_BACK) != 0)
         {
             DEBUG_LOG("Failed to initialize DxLib.");
-            ASSERT(false);
+            DEBUG_ASSERT(false);
         }
     }
 
@@ -59,7 +59,7 @@ public:
         if (DxLib_End() == -1)
         {
             DEBUG_LOG("Failed to finalize DxLib.");
-            ASSERT(false);
+            DEBUG_ASSERT(false);
         }
     }
 
@@ -131,7 +131,7 @@ MainSystem::Task* MainSystem::task_ = nullptr;
 
 MainSystem MainSystem::CreateTask()
 {
-    ASSERT(!task_);
+    DEBUG_ASSERT(!task_);
     MainSystem task_interface;
 
     Task* task = new Task;

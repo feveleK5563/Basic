@@ -1,18 +1,19 @@
 //------------------------------------------------------------------------------
-// <name>_task.cpp
-// 説明
+// renderSystem_task.cpp
+// 描画管理
 //------------------------------------------------------------------------------
 
 #include "DxLib/DxLib.h"
 #include "system/task/taskBase.h"
+#include "system/renderSystem_task.h"
 #include "util/debugUtil.hpp"
 
-class <Name>::Task : public TaskBase 
+class RenderSystem::Task : public TaskBase 
 {
 public:
     TaskGroup GetGroup() const override
     {
-        return TaskGroup::<Name>;
+        return TaskGroup::RenderSystem;
     }
 
 public:
@@ -42,9 +43,12 @@ private:
 
 //------------------------------------------------------------------------------
 
-<Name> <Name>::CreateTask()
+RenderSystem::Task* RenderSystem::task_ = nullptr;
+
+RenderSystem RenderSystem::CreateTask()
 {
-    <Name> task_interface;
+    DEBUG_ASSERT(!task_);
+    RenderSystem task_interface;
 
     Task* task = new Task;
     if (TaskSystem::AddTask(task))

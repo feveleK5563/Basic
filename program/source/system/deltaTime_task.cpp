@@ -77,9 +77,6 @@ public:
         }
         dif_time_ = dif_time;
         check_time_ = current_time;
-
-        DrawFormatString(0, 0, GetColor(255, 255, 255), "DIF_TIME:%d", dif_time_);
-        DrawFormatString(0, 20, GetColor(255, 255, 255), "DIF_TIME_AVR:%d", dif_time_average_);
     }
 
     //-----------------------------------------------------
@@ -92,7 +89,7 @@ public:
 
 private:
     static constexpr LONGLONG MIC_SEC = 1000000;
-    static constexpr float MIC_SEC_F = 1000000.f;
+    static constexpr float MIC_SEC_F = (float)MIC_SEC;
 
     LONGLONG check_time_ = 0;
     float delta_time_ = 0.f;
@@ -112,7 +109,7 @@ DeltaTime::Task* DeltaTime::task_ = nullptr;
 
 DeltaTime DeltaTime::CreateTask()
 {
-    ASSERT(!task_);
+    DEBUG_ASSERT(!task_);
     DeltaTime task_interface;
 
     Task* task = new Task;

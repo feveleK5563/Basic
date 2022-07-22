@@ -271,46 +271,46 @@ static TaskSystem_Impl* impl = nullptr;
 
 void TaskSystem::Initialize()
 {
-    ASSERT(!impl);
+    DEBUG_ASSERT(!impl);
     impl = new TaskSystem_Impl;
     impl->Initialize();
 }
 
 void TaskSystem::Finalize()
 {
-    ASSERT(impl);
+    DEBUG_ASSERT(impl);
     impl->Finalize();
     delete impl;
 }
 
 void TaskSystem::MainLoop()
 {
-    ASSERT(impl);
+    DEBUG_ASSERT(impl);
     impl->MainLoop();
 }
 
 void TaskSystem::KillAllTask()
 {
-    ASSERT(impl);
+    DEBUG_ASSERT(impl);
     impl->KillAllTask();
 }
 
 bool TaskSystem::AddTask(TaskBase* task)
 {
-    ASSERT(impl);
+    DEBUG_ASSERT(impl);
     return impl->AddTask(task);
 }
 
 int TaskSystem::GetTaskNum(TaskGroup group)
 {
-    ASSERT(impl);
+    DEBUG_ASSERT(impl);
     return impl->GetTaskNum(group);
 }
 
 template<class T>
 bool TaskSystem::GetTask(TaskGroup group, const T* task_single)
 {
-    ASSERT(impl);
+    DEBUG_ASSERT(impl);
     return impl->GetTask(group, task_single);
 }
 
@@ -318,6 +318,6 @@ template<class T>
 bool TaskSystem::GetTaskArray(
     TaskGroup group, const T** task_array, int size)
 {
-    ASSERT(impl);
+    DEBUG_ASSERT(impl);
     return impl->GetTaskArray(group, task_array, size);
 }

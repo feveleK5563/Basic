@@ -12,8 +12,9 @@ enum struct TaskGroup
     None = 0,
 
     // システム系
-    MainSystem  = 1,    // DXライブラリの起動と更新
-    Fps         = 2,    // FPS制御
+    MainSystem      = 1,    // DXライブラリの起動と更新
+    Fps             = 2,    // FPS制御
+    RenderSystem    = 3,    // 描画システム
 
     //----------------------------------------------------------------------
 

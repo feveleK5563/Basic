@@ -126,18 +126,18 @@ Test Test::CreateTask()
 
 void Test::SetIndex(int index)
 {
-    ASSERT(task_);
+    DEBUG_ASSERT(task_);
     task_->SetIndex(index);
 }
 
 void Test::SetPos(float x, float y)
 {
-    ASSERT(task_);
+    DEBUG_ASSERT(task_);
     task_->SetPos(x, y);
 }
 
 void Test::SetSpeed(float speed)
 {
-    ASSERT(task_);
+    DEBUG_ASSERT(task_);
     task_->SetSpeed(speed);
 }
